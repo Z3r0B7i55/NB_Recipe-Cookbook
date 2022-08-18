@@ -69,4 +69,10 @@ public class Recipe {
         */
         System.out.print("FIXME: printRecipe() - Recipe.java");
     }
+    
+    public Recipe addRecipe(String name) {
+        Recipe newRecipe = new Recipe();
+        newRecipe.recipeName = "";
+        return newRecipe;
+    }
 }
