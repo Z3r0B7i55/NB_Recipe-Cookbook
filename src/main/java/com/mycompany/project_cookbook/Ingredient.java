@@ -34,29 +34,43 @@ public class Ingredient {
         ingredientName = name;
     }
     
+    /* Get the number of cups, and this just return a float
+    *  therefore, it is important this is addressed later.
+    *  FIXME: Maybe make it a double, which could be calculated
+    *  as a method later?
+    */
     public float getNumberOfCups() {
         return numberOfCups;
     }
+    
+    /* Set the number of cups.
+    *  @see getNumberOfCups()
+    */
     public void setNumberOfCups(float cups) {
         numberOfCups = cups;
     }
     
+    // Get number of calories per cup.
     public int getNumberOfCaloriesPerCup() {
         return numberOfCaloriesPerCup;
     }
     
+    // Set the number of calories per cup.
     public void setNumberOfCaloriesPerCup(int calories) {
         numberOfCaloriesPerCup = calories;
     }
     
+    // Get the total amount of calories.
     public double getTotalCalories() {
         return totalCalories;
     }
     
+    // Set the total amount of calories.
     public void setTotalCalories(int totCalories) {
         totalCalories = totCalories;
     }
     
+    // Add Ingredient, for esatablishing new ingredients.
     public Ingredient addIngredient(String name) {
         Ingredient newIngredient = new Ingredient();
         newIngredient.ingredientName = "";
