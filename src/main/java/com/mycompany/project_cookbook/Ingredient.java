@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.project_cookbook;
+import java.util.Scanner;
+import java.lang.Integer;
 
 /**
  * @date 8/18/2022
@@ -12,14 +14,15 @@ package com.mycompany.project_cookbook;
 
 public class Ingredient {
     private String ingredientName;
-    private float numberOfCups;
+    private String unitMeasurement;
+    private float ingredientAmount;
     private int numberOfCaloriesPerCup;
     private double totalCalories;
     
     // Default Constructor
     public Ingredient() {
         ingredientName = "";
-        numberOfCups = 0;
+        ingredientAmount = 0;
         numberOfCaloriesPerCup = 0;
         totalCalories = 0;
     }
@@ -34,20 +37,20 @@ public class Ingredient {
         ingredientName = name;
     }
     
-    /* Get the number of cups, and this just return a float
-    *  therefore, it is important this is addressed later.
-    *  FIXME: Maybe make it a double, which could be calculated
-    *  as a method later?
-    */
-    public float getNumberOfCups() {
-        return numberOfCups;
+    public String getUnitMeasurement() {
+        return unitMeasurement;
     }
     
-    /* Set the number of cups.
-    *  @see getNumberOfCups()
-    */
-    public void setNumberOfCups(float cups) {
-        numberOfCups = cups;
+    public void setUnitMeasurement(String unit) {
+        unitMeasurement = unit;
+    }
+    
+    public float getIngredientAmount() {
+        return ingredientAmount;
+    }
+    
+    public void setIngredientAmount(float amount) {
+        ingredientAmount = amount;
     }
     
     // Get number of calories per cup.
@@ -66,14 +69,74 @@ public class Ingredient {
     }
     
     // Set the total amount of calories.
-    public void setTotalCalories(int totCalories) {
+    public void setTotalCalories(double totCalories) {
         totalCalories = totCalories;
     }
     
     // Add Ingredient, for esatablishing new ingredients.
     public Ingredient addIngredient(String name) {
+        Scanner userInput = new Scanner(System.in);
         Ingredient newIngredient = new Ingredient();
-        newIngredient.ingredientName = "";
+        newIngredient.setIngredientName(name);
+        
+        boolean isGoodSelection = false;
+        do {
+            System.out.println("Please enter the unit of measurement for this ingredient. Please chose from the list below."
+                               + "\n Cup\n Tbsp\n Tsp\n Gram\nMake your selection by typing the name as it appears.");
+            
+            if(userInput.hasNext()) {
+                newIngredient.setUnitMeasurement(userInput.next());
+                if(!"Cup".equals(newIngredient.getUnitMeasurement()) && !"Tbsp".equals(newIngredient.getUnitMeasurement()) 
+                && !"Tsp".equals(newIngredient.getUnitMeasurement()) && !"Gram".equals(newIngredient.getUnitMeasurement())) {
+                    System.out.print("Error: unit of measurement not recognized, could this by a typo? Please try again.");
+                }
+                else {
+                    isGoodSelection = true;
+                }
+            }
+        } while(!isGoodSelection);
+        
+        String tempResponse;
+        
+        isGoodSelection = false;
+        do {
+            System.out.println("How many " + newIngredient.getUnitMeasurement() + "(s)?");
+            
+            if(userInput.hasNext()) {
+                tempResponse = userInput.next();
+                if(!tempResponse.matches("[+-]?\\d*(\\.\\d+)?")) {
+                    System.out.println("Error: amount " + tempResponse + " is not a numerical value. Please try again.");
+                }
+                else {
+                    newIngredient.setIngredientAmount(Float.parseFloat(tempResponse));
+                    isGoodSelection = true;
+                }
+            }
+        } while(!isGoodSelection);
+        
+        isGoodSelection = false;
+        do {
+            System.out.println("How many calories are in each " + newIngredient.getUnitMeasurement() + "?");
+            if(userInput.hasNext()) {
+                tempResponse = userInput.next();
+                if(!tempResponse.matches("[+-]?\\d*(\\.\\d+)?")) {
+                    System.out.println("Error: amount " + tempResponse + " is not a numerical value. Please try again.");
+                }
+                else {
+                   newIngredient.setNumberOfCaloriesPerCup(Integer.parseInt(tempResponse));
+                   isGoodSelection = true;
+                }
+            }
+        } while(!isGoodSelection);
+        
+        newIngredient.setTotalCalories(newIngredient.getNumberOfCaloriesPerCup() * newIngredient.getIngredientAmount());
+        
+        if(newIngredient.getIngredientAmount() >= 2.0)
+            System.out.println(newIngredient.getIngredientName() + " uses " + newIngredient.getIngredientAmount() + newIngredient.getUnitMeasurement() + "s and has " + newIngredient.getTotalCalories() + " calories.");
+        else
+            System.out.println(newIngredient.getIngredientName() + " uses " + newIngredient.getIngredientAmount() + newIngredient.getUnitMeasurement() + " and has " + newIngredient.getTotalCalories() + " calories.");
+        
+        userInput.close(); 
         return newIngredient;
     }
 }
